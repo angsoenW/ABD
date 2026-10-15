@@ -1,11 +1,13 @@
 using UnityEngine;
+using TMPro;
 #if ENABLE_INPUT_SYSTEM
 using UnityEngine.InputSystem;
 #endif
 
 // Attach to the projectile (needs Rigidbody2D + Collider2D + LineRenderer).
 // Drag the projectile back from the anchor and release to launch.
-// Press R to reset.
+// The projectile comes back to the slingshot automatically when it stops,
+// leaves the screen, or flies too long. Press R to bring it back manually.
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(LineRenderer))]
 public class Slingshot : MonoBehaviour
@@ -19,11 +21,25 @@ public class Slingshot : MonoBehaviour
     public int previewPoints = 30;
     public float previewTimeStep = 0.05f;
 
+    [Header("Auto Return")]
+    public float stopSpeed = 0.2f;              // slower than this counts as "stopped"
+    public float stoppedTimeToReturn = 1f;      // seconds stopped before it comes back
+    public float maxFlightTime = 6f;            // comes back after this long no matter what
+
+    [Header("Shots")]
+    public int maxShots = 0;                    // 0 = unlimited
+    public TMP_Text shotsText;                  // optional UI text, e.g. "Shots: 2/5"
+
+    public int ShotsUsed { get; private set; }
+    public bool OutOfShots => maxShots > 0 && ShotsUsed >= maxShots;
+
     Rigidbody2D rb;
     LineRenderer line;
     Camera cam;
     bool isDragging;
     bool launched;
+    float flightTime;
+    float stoppedTime;
 
     void Awake()
     {
@@ -46,12 +62,20 @@ public class Slingshot : MonoBehaviour
     void Start()
     {
         ResetProjectile();
+        UpdateShotsText();
     }
 
     void Update()
     {
         if (ResetPressed()) ResetProjectile();
-        if (launched) return;
+
+        if (launched)
+        {
+            TrackFlight();
+            return;
+        }
+
+        if (OutOfShots) return;
 
         Vector2 mouse = MouseWorld();
 
@@ -78,15 +102,34 @@ public class Slingshot : MonoBehaviour
     {
         isDragging = false;
         launched = true;
+        flightTime = 0f;
+        stoppedTime = 0f;
         line.positionCount = 0;
 
-        Vector2 v = LaunchVelocity();
+        ShotsUsed++;
+        UpdateShotsText();
+
         rb.bodyType = RigidbodyType2D.Dynamic;
-#if UNITY_6000_0_OR_NEWER
-        rb.linearVelocity = v;
-#else
-        rb.velocity = v;
-#endif
+        SetVelocity(LaunchVelocity());
+    }
+
+    // Brings the projectile back once it has stopped, left the screen, or flown too long.
+    void TrackFlight()
+    {
+        flightTime += Time.deltaTime;
+
+        if (GetVelocity().magnitude < stopSpeed) stoppedTime += Time.deltaTime;
+        else stoppedTime = 0f;
+
+        if (stoppedTime >= stoppedTimeToReturn || flightTime >= maxFlightTime || IsOffScreen())
+            ResetProjectile();
+    }
+
+    // Only checks left, right and bottom, so a high arc above the screen doesn't end the shot.
+    bool IsOffScreen()
+    {
+        Vector3 vp = cam.WorldToViewportPoint(rb.position);
+        return vp.x < -0.2f || vp.x > 1.2f || vp.y < -0.2f;
     }
 
     void ResetProjectile()
@@ -95,15 +138,28 @@ public class Slingshot : MonoBehaviour
         launched = false;
         line.positionCount = 0;
         rb.bodyType = RigidbodyType2D.Kinematic;
-#if UNITY_6000_0_OR_NEWER
-        rb.linearVelocity = Vector2.zero;
-#else
-        rb.velocity = Vector2.zero;
-#endif
+        SetVelocity(Vector2.zero);
         rb.angularVelocity = 0f;
         rb.position = anchor.position;
         transform.position = anchor.position;
         transform.rotation = Quaternion.identity;
+        UpdateShotsText();
+    }
+
+    void UpdateShotsText()
+    {
+        if (shotsText == null) return;
+
+        if (maxShots > 0)
+        {
+            shotsText.text = OutOfShots && !launched
+                ? $"Shots: {ShotsUsed}/{maxShots}  Out of shots!"
+                : $"Shots: {ShotsUsed}/{maxShots}";
+        }
+        else
+        {
+            shotsText.text = $"Shots: {ShotsUsed}";
+        }
     }
 
     void DrawTrajectory(Vector2 start, Vector2 velocity)
@@ -116,6 +172,25 @@ public class Slingshot : MonoBehaviour
             Vector2 p = start + velocity * t + 0.5f * g * t * t;
             line.SetPosition(i, p);
         }
+    }
+
+    // ---------- Velocity (works on Unity 6 and older) ----------
+    Vector2 GetVelocity()
+    {
+#if UNITY_6000_0_OR_NEWER
+        return rb.linearVelocity;
+#else
+        return rb.velocity;
+#endif
+    }
+
+    void SetVelocity(Vector2 v)
+    {
+#if UNITY_6000_0_OR_NEWER
+        rb.linearVelocity = v;
+#else
+        rb.velocity = v;
+#endif
     }
 
     // ---------- Input (works with both input systems) ----------
