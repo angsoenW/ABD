@@ -132,7 +132,8 @@ public class Slingshot : MonoBehaviour
         return vp.x < -0.2f || vp.x > 1.2f || vp.y < -0.2f;
     }
 
-    void ResetProjectile()
+    // Public so other scripts (e.g. WaterBurst) can send the projectile back.
+    public void ResetProjectile()
     {
         isDragging = false;
         launched = false;
