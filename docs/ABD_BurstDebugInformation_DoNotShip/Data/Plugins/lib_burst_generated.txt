@@ -10,7 +10,6 @@ Library: C:\Users\jaspe\ABD\Temp\BurstOutput\Data\Plugins\lib_burst_generated
 --target-framework=NetFramework
 --generate-link-xml=Temp\burst.link.xml
 --temp-folder=C:\Users\jaspe\ABD\Temp\Burst
---debug=Full
 --generate-static-linkage-methods
 --key-folder=C:/Program Files/Unity/Hub/Editor/6000.5.10f1/Editor/Data/PlaybackEngines/WebGLSupport
 --decode-folder=C:\Users\jaspe\ABD\Library\Burst
@@ -128,7 +127,6 @@ Library: C:\Users\jaspe\ABD\Temp\BurstOutput\Data\Plugins\lib_burst_generated
 --target-framework=NetFramework
 --generate-link-xml=Temp\burst.link.xml
 --temp-folder=C:\Users\jaspe\ABD\Temp\Burst
---debug=Full
 --generate-static-linkage-methods
 --key-folder=C:/Program Files/Unity/Hub/Editor/6000.5.10f1/Editor/Data/PlaybackEngines/WebGLSupport
 --decode-folder=C:\Users\jaspe\ABD\Library\Burst
@@ -170,7 +168,6 @@ Library: C:\Users\jaspe\ABD\Temp\BurstOutput\Data\Plugins\lib_burst_generated
 --float-mode=Fast
 --generate-link-xml=Temp\burst.link.xml
 --temp-folder=C:\Users\jaspe\ABD\Temp\Burst
---debug=Full
 --generate-static-linkage-methods
 --key-folder=C:/Program Files/Unity/Hub/Editor/6000.5.10f1/Editor/Data/PlaybackEngines/WebGLSupport
 --decode-folder=C:\Users\jaspe\ABD\Library\Burst
