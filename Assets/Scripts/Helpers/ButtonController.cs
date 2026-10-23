@@ -6,7 +6,7 @@ public class ButtonController : MonoBehaviour
     public GameObject waterBlockingObstacle; // Drag 'WaterGate' here
 
     [Header("Visual Feedback Settings")]
-    public float pressedScaleY = 0.3f;       // Squish factor for Y scale (30% of original height)
+    public float pressedScaleY = 0.3f;       // Squish factor for Y scale
     public Color pressedColor = Color.green; // Color change upon activation
 
     private bool isPressed = false;
@@ -19,8 +19,9 @@ public class ButtonController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        // Ignore soil/dirt particles so only real objects press the button
-        if (!isPressed && !collision.CompareTag("Dirt") && !collision.CompareTag("DTerrain"))
+        // Ignore water drop triggers or self-collisions if needed
+        // Only trigger on solid physical objects (like the secondary ball)
+        if (!isPressed && !collision.isTrigger)
         {
             isPressed = true;
             
@@ -30,7 +31,7 @@ public class ButtonController : MonoBehaviour
             float newHeight = originalHeight * pressedScaleY;
             float heightDifference = originalHeight - newHeight;
 
-            // 2. Resize and offset Y position down so the bottom stays anchored to the floor
+            // 2. Resize and offset Y position down so it squishes against the floor
             transform.localScale = new Vector3(startScale.x, newHeight, startScale.z);
             transform.position -= new Vector3(0f, heightDifference / 2f, 0f);
 
