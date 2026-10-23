@@ -3,21 +3,19 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-// Level 3 only.
-// Creates a tunnel along the pressurized water trajectory.
-// Erosion continues briefly after the highest point,
-// then stops so water can fall naturally under gravity.
+// Level 4 - Pressurized Water Erosion
+// Carves a tunnel only when the launcher accepts a valid shot.
+// Stops digging after the shot limit or when the game ends.
 
 public class WaterJetErosion : MonoBehaviour
 {
     [Header("References")]
     public WaterLauncherAim aim;
+    public PressureWaterLauncher launcher;
     public Tilemap dirt;
     public Tilemap obstacles;
     public Rigidbody2D waterDropPrefabRigidbody;
     public Collider2D reservoirCollider;
-
-    // NEW: Reference to the win/lose controller.
     public GoalReservoir goalReservoir;
 
     [Header("Tunnel Settings")]
@@ -45,16 +43,26 @@ public class WaterJetErosion : MonoBehaviour
 
     private Coroutine carving;
 
-    void OnEnable()
+    void Start()
     {
-        if (aim != null)
-            aim.OnShot += StartCarving;
+        if (launcher == null)
+        {
+            Debug.LogError(
+                "WaterJetErosion: Launcher not assigned!"
+            );
+
+            enabled = false;
+            return;
+        }
+
+        // Only dig when a shot has been accepted.
+        launcher.OnAcceptedShot += StartCarving;
     }
 
     void OnDisable()
     {
-        if (aim != null)
-            aim.OnShot -= StartCarving;
+        if (launcher != null)
+            launcher.OnAcceptedShot -= StartCarving;
 
         if (carving != null)
         {
@@ -65,7 +73,7 @@ public class WaterJetErosion : MonoBehaviour
 
     void StartCarving(Vector2 launchVelocity)
     {
-        // NEW: Prevent carving after winning or losing.
+        // Prevent carving after winning or losing.
         if (goalReservoir != null && goalReservoir.Finished)
             return;
 
@@ -114,7 +122,7 @@ public class WaterJetErosion : MonoBehaviour
 
         while (flightTime < stopDiggingTime)
         {
-            // NEW: Stop active erosion when the game ends.
+            // Stop active erosion when the game ends.
             if (goalReservoir != null && goalReservoir.Finished)
                 break;
 
@@ -164,7 +172,7 @@ public class WaterJetErosion : MonoBehaviour
                     fraction
                 );
 
-                // Stop when reaching indestructible obstacles.
+                // Stop at indestructible obstacles.
                 if (obstacles != null)
                 {
                     Vector3Int obstacleCell =
@@ -177,7 +185,7 @@ public class WaterJetErosion : MonoBehaviour
                     }
                 }
 
-                // Stop at the reservoir if assigned.
+                // Stop at the reservoir collider.
                 if (reservoirCollider != null &&
                     reservoirCollider.OverlapPoint(position))
                 {
@@ -187,8 +195,7 @@ public class WaterJetErosion : MonoBehaviour
 
                 float radiusMultiplier = 1f;
 
-                // After the apex, gradually reduce erosion width,
-                // but don't make the tunnel too narrow.
+                // Reduce erosion slightly after the apex.
                 if (currentTime >= apexTime)
                 {
                     float downhillProgress =

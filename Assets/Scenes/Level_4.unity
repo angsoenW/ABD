@@ -254870,6 +254870,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WaterJetErosion
   aim: {fileID: 910118719}
+  launcher: {fileID: 378813746}
   dirt: {fileID: 72296231}
   obstacles: {fileID: 82213261}
   waterDropPrefabRigidbody: {fileID: 5639665792549606042, guid: d5fb81953af064c45882eb7e66b7d139, type: 3}
