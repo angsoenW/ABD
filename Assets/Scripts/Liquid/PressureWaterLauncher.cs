@@ -25,6 +25,12 @@ public class PressureWaterLauncher : MonoBehaviour
 
     private int shotsUsed = 0;
     private bool spraying = false;
+    public int ShotsUsed => shotsUsed;
+
+    public bool OutOfShots =>
+        maxShots > 0 && shotsUsed >= maxShots;
+
+    public bool IsSpraying => spraying;
     private Coroutine sprayCoroutine;
 
     void Start()

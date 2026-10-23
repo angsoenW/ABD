@@ -17,6 +17,9 @@ public class WaterJetErosion : MonoBehaviour
     public Rigidbody2D waterDropPrefabRigidbody;
     public Collider2D reservoirCollider;
 
+    // NEW: Reference to the win/lose controller.
+    public GoalReservoir goalReservoir;
+
     [Header("Tunnel Settings")]
     public float tunnelRadius = 0.6f;
     public float maxTrajectoryTime = 3f;
@@ -62,6 +65,10 @@ public class WaterJetErosion : MonoBehaviour
 
     void StartCarving(Vector2 launchVelocity)
     {
+        // NEW: Prevent carving after winning or losing.
+        if (goalReservoir != null && goalReservoir.Finished)
+            return;
+
         if (aim == null || dirt == null ||
             waterDropPrefabRigidbody == null)
         {
@@ -107,6 +114,10 @@ public class WaterJetErosion : MonoBehaviour
 
         while (flightTime < stopDiggingTime)
         {
+            // NEW: Stop active erosion when the game ends.
+            if (goalReservoir != null && goalReservoir.Finished)
+                break;
+
             float nextTime = Mathf.Min(
                 flightTime +
                 Time.fixedDeltaTime * erosionSpeed,

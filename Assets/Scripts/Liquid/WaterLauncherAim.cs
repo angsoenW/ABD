@@ -19,6 +19,9 @@ public class WaterLauncherAim : MonoBehaviour
     public float launchPower = 8f;
     public float clickRadius = 0.75f;
 
+    [Header("Game State")]
+    public GoalReservoir goalReservoir;
+
     [Header("Trajectory Preview")]
     public int previewPoints = 30;
     public float previewTimeStep = 0.05f;
@@ -66,7 +69,9 @@ public class WaterLauncherAim : MonoBehaviour
     {
         if (anchor == null || cam == null)
         {
-            Debug.LogError("WaterLauncherAim: Missing anchor or camera!");
+            Debug.LogError(
+                "WaterLauncherAim: Missing anchor or camera!"
+            );
             enabled = false;
             return;
         }
@@ -77,6 +82,19 @@ public class WaterLauncherAim : MonoBehaviour
 
     void Update()
     {
+        // NEW: Disable aiming and shooting after win or loss.
+        if (goalReservoir != null && goalReservoir.Finished)
+        {
+            if (isDragging)
+            {
+                isDragging = false;
+                ResetHandle();
+            }
+
+            line.positionCount = 0;
+            return;
+        }
+
         Vector2 mouse = MouseWorld();
 
         if (MouseDown() &&
@@ -85,7 +103,8 @@ public class WaterLauncherAim : MonoBehaviour
             isDragging = true;
         }
 
-        if (!isDragging) return;
+        if (!isDragging)
+            return;
 
         Vector2 offset = Vector2.ClampMagnitude(
             mouse - (Vector2)anchor.position,
