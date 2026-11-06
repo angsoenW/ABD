@@ -1,4 +1,4 @@
-Library: /Users/aaravdev/Downloads/ABD/Temp/BurstOutput/Data/Plugins/lib_burst_generated
+Library: C:\Users\jaspe\ABD\Temp\BurstOutput\Data\Plugins\lib_burst_generated
 --platform=Wasm
 --minimum-os-version=
 --backend=burst-llvm-21
@@ -8,12 +8,12 @@ Library: /Users/aaravdev/Downloads/ABD/Temp/BurstOutput/Data/Plugins/lib_burst_g
 --dump=Function
 --float-precision=Standard
 --target-framework=NetFramework
---generate-link-xml=Temp/burst.link.xml
---temp-folder=/Users/aaravdev/Downloads/ABD/Temp/Burst
+--generate-link-xml=Temp\burst.link.xml
+--temp-folder=C:\Users\jaspe\ABD\Temp\Burst
 --generate-static-linkage-methods
---key-folder=/Applications/Unity/Hub/Editor/6000.5.10f1/PlaybackEngines/WebGLSupport
---decode-folder=/Users/aaravdev/Downloads/ABD/Library/Burst
---output=/Users/aaravdev/Downloads/ABD/Temp/BurstOutput/Data/Plugins/lib_burst_generated
+--key-folder=C:/Program Files/Unity/Hub/Editor/6000.5.10f1/Editor/Data/PlaybackEngines/WebGLSupport
+--decode-folder=C:\Users\jaspe\ABD\Library\Burst
+--output=C:\Users\jaspe\ABD\Temp\BurstOutput\Data\Plugins\lib_burst_generated
 --pdb-search-paths=Temp/ManagedSymbols/
 
 --method=Unity.Burst.BurstCompiler+BurstCompilerHelper, Unity.Burst, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null::IsBurstEnabled()--8c2be93e18276203cbd918daa2748a10
@@ -125,12 +125,12 @@ Library: /Users/aaravdev/Downloads/ABD/Temp/BurstOutput/Data/Plugins/lib_burst_g
 --dump=Function
 --float-precision=Standard
 --target-framework=NetFramework
---generate-link-xml=Temp/burst.link.xml
---temp-folder=/Users/aaravdev/Downloads/ABD/Temp/Burst
+--generate-link-xml=Temp\burst.link.xml
+--temp-folder=C:\Users\jaspe\ABD\Temp\Burst
 --generate-static-linkage-methods
---key-folder=/Applications/Unity/Hub/Editor/6000.5.10f1/PlaybackEngines/WebGLSupport
---decode-folder=/Users/aaravdev/Downloads/ABD/Library/Burst
---output=/Users/aaravdev/Downloads/ABD/Temp/BurstOutput/Data/Plugins/lib_burst_generated
+--key-folder=C:/Program Files/Unity/Hub/Editor/6000.5.10f1/Editor/Data/PlaybackEngines/WebGLSupport
+--decode-folder=C:\Users\jaspe\ABD\Library\Burst
+--output=C:\Users\jaspe\ABD\Temp\BurstOutput\Data\Plugins\lib_burst_generated
 --pdb-search-paths=Temp/ManagedSymbols/
 
 --method=Unity.Jobs.IJobParallelForExtensions+ParallelForJobStruct`1[[Unity.Collections.SortJob`2+SegmentSort[[System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089],[Unity.Collections.NativeSortExtension+DefaultComparer`1[[System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]], Unity.Collections, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]], Unity.Collections, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]], UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null::Execute(Unity.Collections.SortJob`2+SegmentSort[[System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089],[Unity.Collections.NativeSortExtension+DefaultComparer`1[[System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]], Unity.Collections, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]&, Unity.Collections, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null|System.IntPtr, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089|System.IntPtr, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089|Unity.Jobs.LowLevel.Unsafe.JobRanges&, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null|System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089)--82ff8baa2abd920945d7abccccedb808
@@ -166,12 +166,12 @@ Library: /Users/aaravdev/Downloads/ABD/Temp/BurstOutput/Data/Plugins/lib_burst_g
 --float-precision=Standard
 --target-framework=NetFramework
 --float-mode=Fast
---generate-link-xml=Temp/burst.link.xml
---temp-folder=/Users/aaravdev/Downloads/ABD/Temp/Burst
+--generate-link-xml=Temp\burst.link.xml
+--temp-folder=C:\Users\jaspe\ABD\Temp\Burst
 --generate-static-linkage-methods
---key-folder=/Applications/Unity/Hub/Editor/6000.5.10f1/PlaybackEngines/WebGLSupport
---decode-folder=/Users/aaravdev/Downloads/ABD/Library/Burst
---output=/Users/aaravdev/Downloads/ABD/Temp/BurstOutput/Data/Plugins/lib_burst_generated
+--key-folder=C:/Program Files/Unity/Hub/Editor/6000.5.10f1/Editor/Data/PlaybackEngines/WebGLSupport
+--decode-folder=C:\Users\jaspe\ABD\Library\Burst
+--output=C:\Users\jaspe\ABD\Temp\BurstOutput\Data\Plugins\lib_burst_generated
 --pdb-search-paths=Temp/ManagedSymbols/
 
 --method=Unity.Jobs.IJobForExtensions+ForJobStruct`1[[UnityEngine.Rendering.Universal.ZBinningJob, Unity.RenderPipelines.Universal.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]], UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null::Execute(UnityEngine.Rendering.Universal.ZBinningJob&, Unity.RenderPipelines.Universal.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null|System.IntPtr, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089|System.IntPtr, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089|Unity.Jobs.LowLevel.Unsafe.JobRanges&, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null|System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089)--77fc393cb521ac129b1392d4eb94d29a
