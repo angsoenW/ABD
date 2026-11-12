@@ -129,6 +129,21 @@ public class LevelUI : MonoBehaviour
         if (losePanel != null) losePanel.SetActive(true);
     }
 
+    public void ShowLose(string customMessage)
+    {
+        if (levelOver) return; // Don't overwrite if the player already won
+        levelOver = true;
+        levelWon = false;
+        SetResult(customMessage);
+        if (losePanel != null) losePanel.SetActive(true);
+
+        // Immediately start pulsing the Restart button in LevelHUD
+        foreach (var pulse in FindObjectsByType<RestartButtonPulse>(FindObjectsSortMode.None))
+        {
+            pulse.StartPulsingNow();
+        }
+    }
+
     void SetResult(string message)
     {
         if (resultText != null) resultText.text = message;
