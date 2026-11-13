@@ -15,7 +15,8 @@ GameObject:
   - component: {fileID: 3876645940161760080}
   - component: {fileID: 5129870743718190942}
   - component: {fileID: 2940617326792033632}
-  m_Layer: 4
+  - component: {fileID: -7770129251625731029}
+  m_Layer: 6
   m_Name: PressureWaterDrop
   m_TagString: Water
   m_Icon: {fileID: 0}
@@ -187,9 +188,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WaterDropVisual
   visual: {fileID: 6030012803733333012}
-  calmColor: {r: 0.25, g: 0.6, b: 1, a: 1}
-  foamColor: {r: 0.6179246, g: 0.9046751, b: 1, a: 1}
-  foamSpeed: 6
+  waterColor: {r: 0.3, g: 0.72, b: 1, a: 1}
+  stretchWhenMoving: 1
   maxStretch: 1.6
   stretchSpeed: 8
   smoothing: 12
@@ -211,6 +211,24 @@ MonoBehaviour:
   digAheadDistance: 0.25
   maxErosionTime: 1.2
   minForwardSpeed: 2
+--- !u!114 &-7770129251625731029
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2076637116424336911}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9c9f38aead464dd490c4cbc550db7b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WaterContamination
+  isContaminated: 0
+  contaminatedColor: {r: 0.9607843, g: 0.6392157, b: 0.78039217, a: 1}
+  contaminationDuration: 1.7
+  spreadDelay: 0.7
+  spreadCheckInterval: 0.5
+  spreadRadius: 0.25
 --- !u!1 &7024015767320705832
 GameObject:
   m_ObjectHideFlags: 0
@@ -221,7 +239,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1229093320310806238}
   - component: {fileID: 6030012803733333012}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Visual
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -238,7 +256,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.3, y: 1.3, z: 1}
+  m_LocalScale: {x: 1.6, y: 1.7, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2001914826617856010}

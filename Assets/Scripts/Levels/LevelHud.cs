@@ -58,6 +58,11 @@ public static class LevelHUD
         rt.sizeDelta = new Vector2(160, 60);
         rt.anchoredPosition = offsetFromTopRight;
 
+        if (label == "Restart")
+        {
+            go.AddComponent<RestartButtonPulse>();
+        }
+
         go.GetComponent<Image>().color = new Color(0f, 0f, 0f, 0.55f);
 
         var button = go.GetComponent<Button>();

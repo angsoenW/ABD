@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 5008024962088795381}
   - component: {fileID: 3876645940161760080}
   - component: {fileID: 5129870743718190942}
+  - component: {fileID: 6134509998623856363}
   m_Layer: 4
   m_Name: WaterDrop
   m_TagString: Water
@@ -186,12 +187,29 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WaterDropVisual
   visual: {fileID: 6030012803733333012}
-  calmColor: {r: 0.25, g: 0.6, b: 1, a: 1}
-  foamColor: {r: 0.9, g: 0.97, b: 1, a: 1}
-  foamSpeed: 6
+  waterColor: {r: 0.3, g: 0.72, b: 1, a: 1}
+  stretchWhenMoving: 1
   maxStretch: 1.6
   stretchSpeed: 8
   smoothing: 12
+--- !u!114 &6134509998623856363
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2076637116424336911}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9c9f38aead464dd490c4cbc550db7b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WaterContamination
+  isContaminated: 0
+  contaminatedColor: {r: 1, g: 0.75, b: 0.85, a: 1}
+  contaminationDuration: 1.5
+  spreadDelay: 0.5
+  spreadCheckInterval: 0.1
+  spreadRadius: 0.25
 --- !u!1 &7024015767320705832
 GameObject:
   m_ObjectHideFlags: 0
