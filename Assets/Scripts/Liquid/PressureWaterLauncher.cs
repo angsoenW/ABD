@@ -3,9 +3,9 @@ using System.Collections;
 using UnityEngine;
 using TMPro;
 
-// Controls the water launcher for Level 3.
-// Each shot releases a fixed amount of water.
-// Updates the existing shots counter.
+// Controls the pressurized water launcher.
+// Each accepted shot releases a fixed burst of water.
+// Stops shooting when the level is finished.
 
 public class PressureWaterLauncher : MonoBehaviour
 {
@@ -25,52 +25,90 @@ public class PressureWaterLauncher : MonoBehaviour
 
     private int shotsUsed = 0;
     private bool spraying = false;
+    private Coroutine sprayCoroutine;
+
+    // Reference to the level's goal.
+    private GoalReservoir goal;
+
     public int ShotsUsed => shotsUsed;
 
     public bool OutOfShots =>
         maxShots > 0 && shotsUsed >= maxShots;
 
     public bool IsSpraying => spraying;
-    private Coroutine sprayCoroutine;
 
     void Start()
     {
         if (aim == null || waterSpawner == null)
         {
             Debug.LogError(
-                "PressureWaterLauncher: Assign Aim and WaterSpawner!"
+                "PressureWaterLauncher: Assign Aim and WaterSpawner!",
+                this
             );
 
             enabled = false;
             return;
         }
 
+        // Find the goal reservoir.
+        goal = FindFirst<GoalReservoir>();
+
         // Prevent water from spawning automatically.
         waterSpawner.fillOnStart = false;
         waterSpawner.dropsPerSecond = 0f;
 
-        // Listen for the player's drag-and-release action.
+        // Find the existing UI counter.
+        if (shotsText == null)
+        {
+            LevelUI levelUI = FindFirst<LevelUI>();
+
+            if (levelUI != null)
+            {
+                shotsText = levelUI.shotsText;
+            }
+        }
+
+        // Listen for shooting input.
         aim.OnShot += StartShot;
 
         UpdateShotsText();
     }
 
-    void OnDestroy()
+    void Update()
     {
-        if (aim != null)
-            aim.OnShot -= StartShot;
+        // Stop spraying immediately when the level ends.
+        if (goal != null && goal.Finished && spraying)
+        {
+            StopSpraying();
+        }
+    }
+
+    void LateUpdate()
+    {
+        // Override the Slingshot UI counter with
+        // the correct PressureWaterLauncher count.
+        UpdateShotsText();
     }
 
     void StartShot(Vector2 velocity)
     {
-        // No new shot while spraying or when out of shots.
-        if (spraying || shotsUsed >= maxShots)
+        // NEW: No shooting after winning or losing.
+        if (goal != null && goal.Finished)
+            return;
+
+        // Prevent overlapping bursts.
+        if (spraying)
+            return;
+
+        // Enforce the shot limit.
+        if (OutOfShots)
             return;
 
         shotsUsed++;
+
         UpdateShotsText();
 
-        // Notify other systems that this shot is valid.
+        // Notify erosion and other subscribed systems.
         OnAcceptedShot?.Invoke(velocity);
 
         sprayCoroutine = StartCoroutine(
@@ -85,42 +123,21 @@ public class PressureWaterLauncher : MonoBehaviour
         waterSpawner.pourVelocity = velocity;
         waterSpawner.dropsPerSecond = dropsPerSecond;
 
-        // Approximate number of drops per shot.
-        float duration = dropsPerShot /
-                         Mathf.Max(1f, dropsPerSecond);
+        // Preserve the existing burst duration.
+        float duration =
+            dropsPerShot / Mathf.Max(1f, dropsPerSecond);
 
         yield return new WaitForSeconds(duration);
 
-        // Stop spraying after the burst.
-        waterSpawner.dropsPerSecond = 0f;
-
-        spraying = false;
-        sprayCoroutine = null;
+        StopSpraying();
 
         Debug.Log(
             $"Shot complete! {shotsUsed}/{maxShots} used."
         );
     }
 
-    void UpdateShotsText()
+    void StopSpraying()
     {
-        if (shotsText == null)
-            return;
-
-        int remaining = Mathf.Max(
-            0,
-            maxShots - shotsUsed
-        );
-
-        shotsText.text =
-            $"Shots: {remaining}/{maxShots}";
-    }
-
-    void OnDisable()
-    {
-        if (aim != null)
-            aim.OnShot -= StartShot;
-
         if (sprayCoroutine != null)
         {
             StopCoroutine(sprayCoroutine);
@@ -130,6 +147,45 @@ public class PressureWaterLauncher : MonoBehaviour
         spraying = false;
 
         if (waterSpawner != null)
+        {
             waterSpawner.dropsPerSecond = 0f;
+        }
+    }
+
+    void UpdateShotsText()
+    {
+        if (shotsText == null)
+            return;
+
+        shotsText.text = maxShots > 0
+            ? $"Shots: {shotsUsed}/{maxShots}"
+            : $"Shots: {shotsUsed}";
+    }
+
+    void OnDisable()
+    {
+        if (aim != null)
+        {
+            aim.OnShot -= StartShot;
+        }
+
+        StopSpraying();
+    }
+
+    void OnDestroy()
+    {
+        if (aim != null)
+        {
+            aim.OnShot -= StartShot;
+        }
+    }
+
+    static T FindFirst<T>() where T : Object
+    {
+#if UNITY_2023_1_OR_NEWER
+        return FindAnyObjectByType<T>();
+#else
+        return FindObjectOfType<T>();
+#endif
     }
 }
