@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7cc1e3ce394c88b4ea0450032857a41e, type: 3}
   m_Name: BombBird
   m_EditorClassIdentifier: Assembly-CSharp::BirdType
-  displayName: Normal
+  displayName: bOOOmB
   color: {r: 0, g: 0, b: 0, a: 1}
   size: 1
   mass: 1.5

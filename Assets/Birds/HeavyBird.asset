@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7cc1e3ce394c88b4ea0450032857a41e, type: 3}
   m_Name: HeavyBird
   m_EditorClassIdentifier: Assembly-CSharp::BirdType
-  displayName: Normal
+  displayName: Heavy Bird
   color: {r: 0.4433962, g: 0.018974245, b: 0, a: 1}
   size: 1.5
   mass: 3
