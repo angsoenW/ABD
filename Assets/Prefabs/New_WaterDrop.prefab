@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 3876645940161760080}
   - component: {fileID: 5129870743718190942}
   - component: {fileID: 6991330663693778542}
-  m_Layer: 4
+  m_Layer: 6
   m_Name: New_WaterDrop
   m_TagString: Water
   m_Icon: {fileID: 0}
@@ -206,6 +206,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WaterContamination
   isContaminated: 0
   contaminatedColor: {r: 1, g: 0.75, b: 0.85, a: 1}
+  contaminationDuration: 1.5
+  spreadDelay: 0.5
+  spreadCheckInterval: 0.1
+  spreadRadius: 0.25
 --- !u!1 &7024015767320705832
 GameObject:
   m_ObjectHideFlags: 0
@@ -216,7 +220,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1229093320310806238}
   - component: {fileID: 6030012803733333012}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Visual
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -264,7 +268,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: ac72b5a6802c13245a7bb175ad8acb13, type: 2}
+  - {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
