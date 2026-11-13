@@ -106357,7 +106357,7 @@ MonoBehaviour:
   waterNeeded: 60
   waterTag: Water
   holdTime: 0.5
-  slingshot: {fileID: 0}
+  slingshot: {fileID: 1588655401}
   settleTime: 3
   onWin:
     m_PersistentCalls:
@@ -247917,6 +247917,17 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 2101109657}
   m_SourcePrefab: {fileID: 100100000, guid: 51d3fe83f72b90e47944a64db7e02c13, type: 3}
+--- !u!114 &1588655401 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6728902975275497505, guid: 51d3fe83f72b90e47944a64db7e02c13, type: 3}
+  m_PrefabInstance: {fileID: 1588655400}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2101109634}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38b0c6e2639f21a4ab87d5d55c67a586, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Slingshot
 --- !u!1 &1698652625
 GameObject:
   m_ObjectHideFlags: 0

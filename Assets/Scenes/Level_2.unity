@@ -88822,7 +88822,7 @@ MonoBehaviour:
   waterNeeded: 40
   waterTag: Water
   holdTime: 0.5
-  slingshot: {fileID: 0}
+  slingshot: {fileID: 314727272}
   settleTime: 3
   onWin:
     m_PersistentCalls:
@@ -89554,6 +89554,17 @@ MonoBehaviour:
   maxDropSpeed: 9
   waterDrag: 1.5
   dropsForFullDrag: 12
+--- !u!114 &314727272 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6728902975275497505, guid: 51d3fe83f72b90e47944a64db7e02c13, type: 3}
+  m_PrefabInstance: {fileID: 536221148}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 314727263}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38b0c6e2639f21a4ab87d5d55c67a586, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Slingshot
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
