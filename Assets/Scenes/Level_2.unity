@@ -88819,7 +88819,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78ed4b198e6aef142bcca37be7c798fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GoalReservoir
-  waterNeeded: 40
+  waterNeeded: 35
   waterTag: Water
   holdTime: 0.5
   slingshot: {fileID: 314727272}
