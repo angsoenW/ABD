@@ -188,7 +188,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WaterDropVisual
   visual: {fileID: 6030012803733333012}
-  waterColor: {r: 1, g: 0.8, b: 0.8980392, a: 1}
+  waterColor: {r: 0.9607843, g: 0.6392157, b: 0.78039217, a: 1}
   stretchWhenMoving: 1
   maxStretch: 1.6
   stretchSpeed: 8
@@ -224,7 +224,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WaterContamination
   isContaminated: 1
-  contaminatedColor: {r: 1, g: 0.75, b: 0.85, a: 1}
+  contaminatedColor: {r: 0.9607843, g: 0.6392157, b: 0.78039217, a: 1}
+  contaminationDuration: 1.5
+  spreadDelay: 0.5
+  spreadCheckInterval: 0.1
+  spreadRadius: 0.25
 --- !u!1 &7024015767320705832
 GameObject:
   m_ObjectHideFlags: 0
@@ -235,7 +239,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1229093320310806238}
   - component: {fileID: 6030012803733333012}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Visual
   m_TagString: Untagged
   m_Icon: {fileID: 0}
