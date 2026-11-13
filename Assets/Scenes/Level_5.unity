@@ -269513,7 +269513,7 @@ MonoBehaviour:
     count: 2
   - type: {fileID: 11400000, guid: 90648d17920e36f41b258b7d4640abfb, type: 2}
     count: 2
-  shotLimit: 4
+  shotLimit: 5
   showTray: 1
 --- !u!114 &2101109657
 MonoBehaviour:
