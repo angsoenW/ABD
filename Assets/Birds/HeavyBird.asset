@@ -16,7 +16,7 @@ MonoBehaviour:
   color: {r: 0.4433962, g: 0.018974245, b: 0, a: 1}
   size: 1.5
   mass: 3
-  launchPowerMultiplier: 0.75
+  launchPowerMultiplier: 0.85
   gravityScale: 1.2
   holeRadius: 0.9
   maxDigs: 225

@@ -270531,6 +270531,32 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &537147215 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 128464898891662663, guid: 51d3fe83f72b90e47944a64db7e02c13, type: 3}
+  m_PrefabInstance: {fileID: 966107242}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &537147217
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 537147215}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7dd49a67bd0178648a50b8dea457e53d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WaterDisturber
+  waterLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  radius: 0.45
+  carry: 0.35
+  splash: 2.5
+  maxDropSpeed: 9
+  waterDrag: 1.5
+  dropsForFullDrag: 12
 --- !u!1001 &966107242
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -270539,9 +270565,21 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 128464898891662663, guid: 51d3fe83f72b90e47944a64db7e02c13, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 379364987129788850, guid: 51d3fe83f72b90e47944a64db7e02c13, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 2983584292368743476, guid: 51d3fe83f72b90e47944a64db7e02c13, type: 3}
       propertyPath: m_Name
       value: 'Bird '
+      objectReference: {fileID: 0}
+    - target: {fileID: 2983584292368743476, guid: 51d3fe83f72b90e47944a64db7e02c13, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 4475261325856848357, guid: 51d3fe83f72b90e47944a64db7e02c13, type: 3}
       propertyPath: terrain
@@ -270598,7 +270636,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 128464898891662663, guid: 51d3fe83f72b90e47944a64db7e02c13, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 537147217}
   m_SourcePrefab: {fileID: 100100000, guid: 51d3fe83f72b90e47944a64db7e02c13, type: 3}
 --- !u!1 &1115735901
 GameObject:

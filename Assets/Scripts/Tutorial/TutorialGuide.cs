@@ -52,11 +52,12 @@ public class TutorialGuide : MonoBehaviour
     public float panelWidth = 560f;
 
     // ---------------- Pages ----------------
-    enum Page { Welcome, Bird, Goal, Counter, Controls, Aim, Shoot, MudExplain, MudPractice, Objective, Complete }
-    static readonly int[] StepOfPage = { 1, 2, 3, 4, 5, 6, 6, 7, 7, 8, 8 };
-    const int StepCount = 8;
+    enum Page { Welcome, Bird, Goal, Counter, Controls, Aim, Cancel, Shoot, MudExplain, MudPractice, Objective, Complete }
+    static readonly int[] StepOfPage = { 1, 2, 3, 4, 5, 6, 6, 7, 8, 8, 9, 9 };
+    const int StepCount = 9;
 
-    static bool IsPractice(Page p) => p == Page.Aim || p == Page.Shoot || p == Page.MudPractice || p == Page.Objective;
+    static bool IsPractice(Page p) => p == Page.Aim || p == Page.Cancel || p == Page.Shoot
+                                   || p == Page.MudPractice || p == Page.Objective;
 
     // ---------------- Session memory (survives a reload of the Tutorial scene) ----------------
     static int savedPage;
@@ -91,6 +92,8 @@ public class TutorialGuide : MonoBehaviour
     bool prevHeld;
     bool failed;
     bool leaving;             // a scene load was requested
+    bool holdForCancel;       // Cancel page: the player let go, the bird is held back until they press R
+    bool cancelPending;       // the player launched before reaching the Cancel step: teach it after the shot
 
     Rigidbody2D birdRb;
     Camera cam;
@@ -192,6 +195,7 @@ public class TutorialGuide : MonoBehaviour
         }
 
         HandleKeyboard();
+        HandleCancelPage();      // before GuardPanelClicks/Slingshot, so a release on this page never launches
         GuardPanelClicks();
         TrackBird();
         UpdateVisuals();
@@ -211,6 +215,13 @@ public class TutorialGuide : MonoBehaviour
     // ---------------- Page flow ----------------
     void GoTo(Page p)
     {
+        // Leaving the Cancel page while the bird is held back: put it on the slingshot first.
+        if (holdForCancel)
+        {
+            holdForCancel = false;
+            if (slingshot != null) slingshot.ResetProjectile();
+        }
+
         page = p;
         savedPage = (int)(p == Page.Complete ? Page.Objective : p);
         hint = "";
@@ -275,7 +286,7 @@ public class TutorialGuide : MonoBehaviour
     void ApplySlingshotLock()
     {
         if (slingshot == null) return;
-        bool allowed = active && !failed && IsPractice(page) && !blockPress;
+        bool allowed = active && !failed && IsPractice(page) && !blockPress && !holdForCancel;
         if (slingshot.enabled != allowed) slingshot.enabled = allowed;
     }
 
@@ -298,18 +309,19 @@ public class TutorialGuide : MonoBehaviour
             case Page.Aim:
                 if (!flying && pull >= aimDistance)
                 {
-                    GoTo(Page.Shoot);                       // still holding: next step says "let go"
+                    GoTo(Page.Cancel);                      // still holding: next step teaches R to cancel
                 }
                 else if (launched)
                 {
-                    if (lastPull >= aimDistance) { GoTo(Page.Shoot); OnShotLaunched(); }
+                    // Launched in one quick flick: count the shot, and teach cancelling after it returns.
+                    if (lastPull >= aimDistance) { cancelPending = true; GoTo(Page.Shoot); OnShotLaunched(); }
                     else SetHint("Too soft! Drag the bird further back before you let go.");
                 }
                 break;
 
             case Page.Shoot:
                 if (launched && !shotLaunched) OnShotLaunched();
-                else if (shotLaunched && (returned || !flying)) GoTo(Page.MudExplain);
+                else if (shotLaunched && (returned || !flying)) GoTo(cancelPending ? Page.Cancel : Page.MudExplain);
                 break;
 
             case Page.MudPractice:
@@ -337,11 +349,81 @@ public class TutorialGuide : MonoBehaviour
     void OnShotLaunched()
     {
         shotLaunched = true;
-        savedPage = (int)Page.MudExplain;   // the shot counts even if the level is restarted mid-flight
+        // The shot counts even if the level is restarted mid-flight.
+        savedPage = (int)(cancelPending ? Page.Cancel : Page.MudExplain);
         titleText.text = "Nice shot!";
         bodyText.text = "Watch your bird fly. It comes back to the pillar when it stops.";
         SetHint("");
         backButton.SetActive(false);
+    }
+
+    // ---------------- Cancel step (press R to cancel an aimed shot) ----------------
+    void HandleCancelPage()
+    {
+        if (page != Page.Cancel || failed || leaving || birdRb == null || slingshot.anchor == null) return;
+
+        bool flying = birdRb.bodyType == RigidbodyType2D.Dynamic;
+        bool pulledBack = !flying && Vector2.Distance(birdRb.position, slingshot.anchor.position) > 0.05f;
+
+        if (ResetKeyPressed())
+        {
+            if (pulledBack || holdForCancel) CancelAimedShot();
+            else SetHint("Drag the bird back first, then press R.");
+            return;
+        }
+
+        // Letting go here would launch the bird. Hold it in place instead and ask for R.
+        // This runs before Slingshot.Update, so the slingshot is locked before it can see the release.
+        if (pulledBack && !holdForCancel && PointerReleasedThisFrame())
+        {
+            holdForCancel = true;
+            ApplySlingshotLock();
+            SetHint("Not this time! Press R to cancel the shot.");
+        }
+    }
+
+    void CancelAimedShot()
+    {
+        holdForCancel = false;
+        slingshot.ResetProjectile();          // back on the slingshot, no shot used
+
+        if (cancelPending)                    // they already launched once: carry on with the lesson
+        {
+            cancelPending = false;
+            GoTo(Page.MudExplain);
+            SetHint("Shot cancelled! Press R any time to start your aim over.");
+        }
+        else
+        {
+            GoTo(Page.Shoot);
+            titleText.text = "Cancelled!";
+            bodyText.text = "The bird is back on the slingshot and no shot was used. Now drag back again and let go to launch it for real.";
+        }
+    }
+
+    static bool ResetKeyPressed()
+    {
+        bool pressed = false;
+#if ENABLE_INPUT_SYSTEM
+        pressed |= Keyboard.current != null && Keyboard.current.rKey.wasPressedThisFrame;
+#endif
+#if ENABLE_LEGACY_INPUT_MANAGER
+        pressed |= Input.GetKeyDown(KeyCode.R);
+#endif
+        return pressed;
+    }
+
+    static bool PointerReleasedThisFrame()
+    {
+        bool released = false;
+#if ENABLE_INPUT_SYSTEM
+        released |= Mouse.current != null && Mouse.current.leftButton.wasReleasedThisFrame;
+        released |= Pointer.current != null && Pointer.current.press.wasReleasedThisFrame;
+#endif
+#if ENABLE_LEGACY_INPUT_MANAGER
+        released |= Input.GetMouseButtonUp(0);
+#endif
+        return released;
     }
 
     void OnTilesChanged(Tilemap tilemap, Tilemap.SyncTile[] tiles)
@@ -430,55 +512,59 @@ public class TutorialGuide : MonoBehaviour
             showBack = false;
         }
         else switch (page)
-        {
-            case Page.Welcome:
-                title = "Welcome!";
-                body = "This short tutorial teaches you how to play. Use <b>Next</b> and <b>Back</b> to move between steps.";
-                break;
-            case Page.Bird:
-                title = "Meet your bird";
-                body = "The <b>white ball</b> on the stone pillar is your bird. You launch it like a slingshot.";
-                break;
-            case Page.Goal:
-                title = "Your goal";
-                body = $"Water is trapped in the pocket at the top. Get <b>{need} drops</b> into the <b>basin</b> below to win.";
-                break;
-            case Page.Counter:
-                title = "Water counter";
-                body = $"<b>Water</b> shows how many drops are in the basin, out of {need}. The bar fills as you go. <b>Shots</b> counts your launches.";
-                break;
-            case Page.Controls:
-                title = "Restart & Menu";
-                body = "If too much water spills out of the level, you lose. Press <b>Restart</b> to try again, or <b>Menu</b> to leave. Press <b>R</b> to call your bird back.";
-                break;
-            case Page.Aim:
-                title = "Try it: aim";
-                body = "Click and hold on the bird, then drag it back. The line shows where it will fly.";
-                break;
-            case Page.Shoot:
-                title = "Let go to launch!";
-                body = "Release to launch. The bird flies the opposite way you pulled. Pull further for a stronger shot.";
-                break;
-            case Page.MudExplain:
-                title = "Mud and rock";
-                body = "Brown <b>mud</b> is soft: your bird digs a tunnel through it and keeps flying. Grey <b>rock</b> can't be dug.";
-                break;
-            case Page.MudPractice:
-                title = "Try it: dig";
-                body = "Launch the bird into the brown mud to dig a tunnel.";
-                break;
-            case Page.Objective:
-                title = "Fill the basin";
-                body = $"Dig through the mud below the water so it pours into the basin. Get {need} drops in to finish!";
-                break;
-            default:   // Complete
-                title = "Tutorial complete!";
-                body = "Great job! In Level 1, watch out for <b>snakes</b>: if your bird touches one, the shot ends.";
-                next = "Start Level 1";
-                showBack = false;
-                showSkip = false;
-                break;
-        }
+            {
+                case Page.Welcome:
+                    title = "Welcome!";
+                    body = "This short tutorial teaches you how to play. Use <b>Next</b> and <b>Back</b> to move between steps.";
+                    break;
+                case Page.Bird:
+                    title = "Meet your bird";
+                    body = "The <b>white ball</b> on the stone pillar is your bird. You launch it like a slingshot.";
+                    break;
+                case Page.Goal:
+                    title = "Your goal";
+                    body = $"Water is trapped in the pocket at the top. Get <b>{need} drops</b> into the <b>basin</b> below to win.";
+                    break;
+                case Page.Counter:
+                    title = "Water counter";
+                    body = $"<b>Water</b> shows how many drops are in the basin, out of {need}. The bar fills as you go. <b>Shots</b> counts your launches.";
+                    break;
+                case Page.Controls:
+                    title = "Restart & Menu";
+                    body = "If too much water spills out of the level, you lose. Press <b>Restart</b> to try again, or <b>Menu</b> to leave. Press <b>R</b> to call your bird back.";
+                    break;
+                case Page.Aim:
+                    title = "Try it: aim";
+                    body = "Click and hold on the bird, then drag it back. The line shows where it will fly.";
+                    break;
+                case Page.Cancel:
+                    title = "Try it: cancel";
+                    body = "Changed your mind? While the bird is pulled back, press <b>R</b> to put it back on the slingshot. No shot is used.";
+                    break;
+                case Page.Shoot:
+                    title = "Now launch it!";
+                    body = "Drag back and let go to launch. The bird flies the opposite way you pulled. Pull further for a stronger shot.";
+                    break;
+                case Page.MudExplain:
+                    title = "Mud and rock";
+                    body = "Brown <b>mud</b> is soft: your bird digs a tunnel through it and keeps flying. Grey <b>rock</b> can't be dug.";
+                    break;
+                case Page.MudPractice:
+                    title = "Try it: dig";
+                    body = "Launch the bird into the brown mud to dig a tunnel.";
+                    break;
+                case Page.Objective:
+                    title = "Fill the basin";
+                    body = $"Dig through the mud below the water so it pours into the basin. Get {need} drops in to finish!";
+                    break;
+                default:   // Complete
+                    title = "Tutorial complete!";
+                    body = "Great job! In Level 1, watch out for <b>snakes</b>: if your bird touches one, the shot ends.";
+                    next = "Start Level 1";
+                    showBack = false;
+                    showSkip = false;
+                    break;
+            }
 
         stepText.text = $"STEP {StepOfPage[(int)page]} OF {StepCount}";
         for (int i = 0; i < dots.Count; i++)
@@ -533,6 +619,15 @@ public class TutorialGuide : MonoBehaviour
                     break;
                 case Page.Aim:
                     targets.Add(new Target { circle = true, center = bird, size = birdBox });
+                    break;
+                case Page.Cancel:
+                    targets.Add(new Target
+                    {
+                        circle = true,
+                        center = bird,
+                        size = birdBox,
+                        label = dragging ? "Press R to cancel" : null
+                    });
                     break;
                 case Page.Shoot:
                     if (!flying) targets.Add(new Target { circle = true, center = bird, size = birdBox, label = dragging ? "Let go!" : null });
@@ -604,7 +699,8 @@ public class TutorialGuide : MonoBehaviour
         }
         if (showDim) dim.SetHoles(holeBuffer);
 
-        UpdateDemo(!failed && !dragging && !flying && (page == Page.Aim || (page == Page.Shoot && !shotLaunched)));
+        UpdateDemo(!failed && !dragging && !flying
+                   && (page == Page.Aim || page == Page.Cancel || (page == Page.Shoot && !shotLaunched)));
     }
 
     void FindHudButtons()
