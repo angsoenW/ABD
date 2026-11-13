@@ -132,11 +132,13 @@ public class AnalyticsManager : MonoBehaviour
         Report(currentLevel, result, snap);
     }
 
-    void Report(int level, string result, Snapshot s)
+    // 'buildIndex' identifies the scene; the form gets the player-facing level number (0 = tutorial).
+    void Report(int buildIndex, string result, Snapshot s)
     {
-        attemptsPerLevel.TryGetValue(level, out int attempts);
+        attemptsPerLevel.TryGetValue(buildIndex, out int attempts);
         attempts++;
-        attemptsPerLevel[level] = attempts;
+        attemptsPerLevel[buildIndex] = attempts;
+        int level = LevelManager.LevelNumberOf(buildIndex);
 
         int stuck = Mathf.Max(0, s.waterAlive - s.waterInGoal);
         int total = s.waterAlive + s.waterFellOff;

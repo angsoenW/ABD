@@ -4,6 +4,7 @@ using TMPro;
 
 // Put on the Canvas in the MainMenu scene.
 // Creates one button per level automatically, so adding a level = adding a scene.
+// The Tutorial button is a normal button in the scene that calls PlayTutorial().
 public class LevelSelectMenu : MonoBehaviour
 {
     public Button buttonPrefab;          // a UI Button (TextMeshPro) saved as a prefab
@@ -24,4 +25,7 @@ public class LevelSelectMenu : MonoBehaviour
             b.onClick.AddListener(() => LevelManager.LoadLevel(level));
         }
     }
+
+    // Hooked up to the "Tutorial" button in the MainMenu scene.
+    public void PlayTutorial() => LevelManager.LoadTutorial();
 }
