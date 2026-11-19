@@ -147243,7 +147243,7 @@ MonoBehaviour:
   waterTag: Water
   holdTime: 0.5
   slingshot: {fileID: 1638965123}
-  settleTime: 3
+  settleTime: 5
   onWin:
     m_PersistentCalls:
       m_Calls: []
@@ -342817,6 +342817,7 @@ MonoBehaviour:
   waterTexture: {fileID: 8400000, guid: 2fb2004c3590a47a091c02f8ee26bcee, type: 2}
   metaballMaterial: {fileID: 2100000, guid: 5be0f97ba1f1c49368ceb67dcbd4e835, type: 2}
   sortingOrder: 5
+  resolutionScale: 1
 --- !u!4 &768035186
 Transform:
   m_ObjectHideFlags: 0
@@ -344827,7 +344828,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: The Ball Shots Out Water!
+  m_text: The Ball Shoots Out Water!
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 125cb55b44b24c4393181402bc6200e6, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: 125cb55b44b24c4393181402bc6200e6, type: 2}

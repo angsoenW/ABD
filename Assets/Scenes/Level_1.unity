@@ -254936,7 +254936,7 @@ MonoBehaviour:
   waterTag: Water
   holdTime: 0.5
   slingshot: {fileID: 1638965123}
-  settleTime: 3
+  settleTime: 5
   onWin:
     m_PersistentCalls:
       m_Calls: []
@@ -526019,6 +526019,7 @@ MonoBehaviour:
   waterTexture: {fileID: 8400000, guid: 2fb2004c3590a47a091c02f8ee26bcee, type: 2}
   metaballMaterial: {fileID: 2100000, guid: 5be0f97ba1f1c49368ceb67dcbd4e835, type: 2}
   sortingOrder: 5
+  resolutionScale: 1
 --- !u!4 &799548232
 Transform:
   m_ObjectHideFlags: 0

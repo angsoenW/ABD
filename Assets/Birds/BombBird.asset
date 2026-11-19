@@ -24,4 +24,4 @@ MonoBehaviour:
   explodes: 1
   explosionRadius: 1.6
   explosionForce: 8
-  autoExplodeDelay: 1.5
+  autoExplodeDelay: 4
