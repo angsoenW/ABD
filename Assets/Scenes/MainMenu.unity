@@ -680,7 +680,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '<size=66%><cspace=0.02em>WHERE''S</cspace></size>
+  m_text: '<size=66%><cspace=0.02em>WHERE''S MY</cspace></size>
 
     <color=#FFD15C>ANGRY
     BIRD?</color>'
