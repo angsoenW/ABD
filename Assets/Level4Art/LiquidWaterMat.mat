@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: LiquidWaterMat
-  m_Shader: {fileID: 4800000, guid: 2c0bee362a956384ba4c15df803f2afb, type: 3}
+  m_Shader: {fileID: 4800000, guid: a7a6d638e47edd7479cbde54b56b032b, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -33,12 +33,13 @@ Material:
     - _BubbleScale: 22
     - _BubbleSize: 0.45
     - _BubbleSpeed: 0.35
-    - _Cutoff: 0.6
+    - _Cutoff: 0.4
     - _DepthPixels: 28
-    - _DropColorAmount: 0.25
-    - _RimWidth: 0.06
-    - _Softness: 0.04
-    - _SurfaceThickness: 3
+    - _DropColorAmount: 0
+    - _MergePixels: 5
+    - _RimWidth: 0.04
+    - _Softness: 0.05
+    - _SurfaceThickness: 2
     m_Colors:
     - _BubbleColor: {r: 0.85, g: 0.96999997, b: 1, a: 0.75}
     - _DeepColor: {r: 0.06999998, g: 0.35999998, b: 0.82, a: 0.88}

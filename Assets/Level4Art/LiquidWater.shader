@@ -12,20 +12,21 @@ Shader "UI/LiquidWater"
         [PerRendererData] _MainTex ("Water Render", 2D) = "black" {}
 
         [Header(Shape)]
-        _Cutoff ("Cutoff (blob size)", Range(0.05, 1.5)) = 0.6
-        _Softness ("Edge Softness", Range(0.001, 0.2)) = 0.04
+        _Cutoff ("Cutoff (blob size)", Range(0.05, 1.5)) = 0.4
+        _Softness ("Edge Softness", Range(0.001, 0.2)) = 0.05
+        _MergePixels ("Merge Radius (px) - blends nearby drops", Range(0, 16)) = 5
 
         [Header(Body)]
         _WaterColor ("Shallow Color (alpha = see-through)", Color) = (0.24, 0.66, 0.97, 0.72)
         _DeepColor ("Deep Color (alpha = see-through)", Color) = (0.07, 0.36, 0.82, 0.88)
         _DepthPixels ("Depth To Full Deep (px)", Range(4, 80)) = 28
-        _DropColorAmount ("Use Drop Colors (foam)", Range(0, 1)) = 0.25
+        _DropColorAmount ("Use Drop Colors (foam)", Range(0, 1)) = 0
 
         [Header(Edges)]
         _RimColor ("Rim Color", Color) = (0.62, 0.88, 1, 1)
-        _RimWidth ("Rim Width", Range(0.0, 0.4)) = 0.06
+        _RimWidth ("Rim Width", Range(0.0, 0.4)) = 0.04
         _SurfaceColor ("Top Surface Color", Color) = (0.82, 0.96, 1, 1)
-        _SurfaceThickness ("Top Surface Thickness (px)", Range(0, 12)) = 3
+        _SurfaceThickness ("Top Surface Thickness (px)", Range(0, 12)) = 2
 
         [Header(Bubbles)]
         _BubbleColor ("Bubble Color (alpha = strength)", Color) = (0.85, 0.97, 1, 0.75)
@@ -56,7 +57,7 @@ Shader "UI/LiquidWater"
 
             sampler2D _MainTex;
             float4 _MainTex_TexelSize;
-            float _Cutoff, _Softness, _DepthPixels, _DropColorAmount, _RimWidth, _SurfaceThickness;
+            float _Cutoff, _Softness, _MergePixels, _DepthPixels, _DropColorAmount, _RimWidth, _SurfaceThickness;
             float _BubbleDensity, _BubbleScale, _BubbleSize, _BubbleSpeed;
             float4 _WaterColor, _DeepColor, _RimColor, _SurfaceColor, _BubbleColor;
 
@@ -71,11 +72,34 @@ Shader "UI/LiquidWater"
 
             float Hash(float2 p) { return frac(sin(dot(p, float2(127.1, 311.7))) * 43758.5453); }
 
-            bool IsWater(float2 uv) { return tex2D(_MainTex, uv).a >= _Cutoff; }
+            // The water render, softened over a small disc so drops that are close together blend into
+            // one shape before the edge is drawn. Works even if the drops use hard-edged circle sprites.
+            float4 Field(float2 uv)
+            {
+                float2 r = _MainTex_TexelSize.xy * _MergePixels;
+                float4 sum = tex2D(_MainTex, uv) * 0.2;
+                sum += tex2D(_MainTex, uv + float2( r.x,  0.0)) * 0.1;
+                sum += tex2D(_MainTex, uv + float2(-r.x,  0.0)) * 0.1;
+                sum += tex2D(_MainTex, uv + float2( 0.0,  r.y)) * 0.1;
+                sum += tex2D(_MainTex, uv + float2( 0.0, -r.y)) * 0.1;
+                sum += tex2D(_MainTex, uv + r * float2( 0.707,  0.707)) * 0.1;
+                sum += tex2D(_MainTex, uv + r * float2(-0.707,  0.707)) * 0.1;
+                sum += tex2D(_MainTex, uv + r * float2( 0.707, -0.707)) * 0.1;
+                sum += tex2D(_MainTex, uv + r * float2(-0.707, -0.707)) * 0.1;
+                return sum;
+            }
+
+            // How much water one depth sample sees, 0..1. A soft ramp instead of a yes/no,
+            // so the colour fades with depth instead of stepping in bands.
+            float WaterAmount(float2 uv) { return smoothstep(_Cutoff * 0.5, _Cutoff * 1.2, tex2D(_MainTex, uv).a); }
+
+            // Tiny per-pixel offset (0..1) that shifts the depth samples, so any leftover steps turn into
+            // a fine grain you can't see instead of stripes.
+            float Jitter(float2 pixel) { return frac(52.9829189 * frac(dot(pixel, float2(0.06711056, 0.00583715)))); }
 
             float4 frag (v2f i) : SV_Target
             {
-                float4 s = tex2D(_MainTex, i.uv);
+                float4 s = Field(i.uv);
                 float a = s.a;                                    // summed blob strength
 
                 float inside = smoothstep(_Cutoff, _Cutoff + _Softness, a);
@@ -84,10 +108,11 @@ Shader "UI/LiquidWater"
                 float2 texel = _MainTex_TexelSize.xy;
 
                 // --- Depth: how much water is above this pixel (0 = at the surface, 1 = deep) ---
+                float jitter = Jitter(floor(i.uv * _MainTex_TexelSize.zw));
                 float depth = 0.0;
-                [unroll] for (int k = 1; k <= 6; k++)
-                    depth += IsWater(i.uv + float2(0, texel.y * _DepthPixels * k / 6.0)) ? 1.0 : 0.0;
-                depth /= 6.0;
+                [unroll] for (int k = 0; k < 8; k++)
+                    depth += WaterAmount(i.uv + float2(0, texel.y * _DepthPixels * (k + 0.25 + jitter) / 8.0));
+                depth = smoothstep(0.0, 1.0, depth / 8.0);
 
                 float4 body = lerp(_WaterColor, _DeepColor, depth);
                 float3 dropCol = saturate(s.rgb / max(a, 0.001));          // keeps the foam from WaterDropVisual
@@ -100,7 +125,7 @@ Shader "UI/LiquidWater"
                 alpha = lerp(_RimColor.a, alpha, core);
 
                 // --- Bright line on the top surface: no water a few pixels above ---
-                float above = tex2D(_MainTex, i.uv + float2(0, texel.y * _SurfaceThickness)).a;
+                float above = Field(i.uv + float2(0, texel.y * _SurfaceThickness)).a;
                 float surface = 1.0 - smoothstep(_Cutoff, _Cutoff + _Softness, above);
                 col = lerp(col, _SurfaceColor.rgb, surface * _SurfaceColor.a);
                 alpha = max(alpha, surface * _SurfaceColor.a);
