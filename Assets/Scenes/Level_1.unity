@@ -255164,12 +255164,12 @@ MonoBehaviour:
   m_spriteAsset: {fileID: 0}
   m_tintAllSprites: 0
   m_StyleSheet: {fileID: 0}
-  m_TextStyleHashCode: 0
+  m_TextStyleHashCode: -1183493901
   m_overrideHtmlColors: 0
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
+  m_fontSize: 48.8
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -526359,6 +526359,60 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 128464898891662663, guid: 51d3fe83f72b90e47944a64db7e02c13, type: 3}
   m_PrefabInstance: {fileID: 6291651324301915083}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1352946550
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1352946551}
+  - component: {fileID: 1352946552}
+  m_Layer: 0
+  m_Name: LevelHint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1352946551
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1352946550}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2021414271}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1352946552
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1352946550}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5d1b65f7be9e441cad3b1214f473f10, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LevelHint
+  steps:
+  - instructionText: Avoid hitting the snakes! They will eat your ball!
+    uiCardTextMatch: 
+    hotkeyNumber: 0
+    worldHighlight: {fileID: 0}
+    advanceOn: 3
+  outlineColor: {r: 1, g: 0.9, b: 0.1, a: 1}
+  outlineThickness: 0.08
+  pulseSpeed: 5
+  pulseAmount: 0.12
 --- !u!1 &1374392389
 GameObject:
   m_ObjectHideFlags: 0
@@ -527623,6 +527677,7 @@ Transform:
   - {fileID: 748441505}
   - {fileID: 936080413}
   - {fileID: 590695025}
+  - {fileID: 1352946551}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2034352170

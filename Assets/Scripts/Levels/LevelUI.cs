@@ -258,25 +258,26 @@ public class LevelUI : MonoBehaviour
     // ---------------- HUD Button Styling ----------------
 
     void StyleHudButtons()
+{
+    bool hasHint = FindFirst<LevelHint>() != null;
+
+    foreach (var canvas in FindObjectsByType<Canvas>(FindObjectsSortMode.None))
     {
-        foreach (
-            var canvas in FindObjectsByType<Canvas>(
-                FindObjectsSortMode.None
-            )
-        )
+        if (canvas.name != "LevelHUD")
+            continue;
+
+        StyleButton(canvas.transform.Find("RestartButton"), 0);
+        StyleButton(canvas.transform.Find("MenuButton"), 1);
+
+        Transform hintBtn = canvas.transform.Find("HintButton");
+        if (hintBtn != null)
         {
-            if (canvas.name != "LevelHUD")
-                continue;
-
-            StyleButton(
-                canvas.transform.Find("RestartButton"), 0
-            );
-
-            StyleButton(
-                canvas.transform.Find("MenuButton"), 1
-            );
+            hintBtn.gameObject.SetActive(hasHint);
+            if (hasHint)
+                StyleButton(hintBtn, 2);
         }
     }
+}
 
     void StyleButton(Transform t, int slot)
     {

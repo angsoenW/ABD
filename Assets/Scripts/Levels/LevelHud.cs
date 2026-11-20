@@ -42,6 +42,11 @@ public static class LevelHUD
 
         CreateButton(root.transform, "Restart", new Vector2(-20, -20), LevelManager.Restart);
         CreateButton(root.transform, "Menu", new Vector2(-200, -20), LevelManager.LoadMenu);
+        CreateButton(root.transform, "Hint", new Vector2(-380, -20), () =>
+        {
+            var hint = Object.FindAnyObjectByType<LevelHint>();
+            if (hint != null) hint.ActivateHint();
+        });
 
         EnsureEventSystem(scene);
     }
