@@ -265021,6 +265021,11 @@ MonoBehaviour:
     hotkeyNumber: 0
     worldHighlight: {fileID: 126533778}
     advanceOn: 2
+  - instructionText: Now carve the remaining path for the water to reach the goal!
+    uiCardTextMatch: 
+    hotkeyNumber: 0
+    worldHighlight: {fileID: 0}
+    advanceOn: 3
   outlineColor: {r: 1, g: 0.9, b: 0.1, a: 1}
   outlineThickness: 0.08
   pulseSpeed: 5
