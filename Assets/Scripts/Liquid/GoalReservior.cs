@@ -35,8 +35,6 @@ public class GoalReservoir : MonoBehaviour
     private float holdTimer;
     private float settleTimer;
 
-    private bool reservoirContaminated = false;
-
     public int WaterInside
     {
         get
@@ -74,15 +72,28 @@ public class GoalReservoir : MonoBehaviour
         WaterContamination contamination =
             drop.GetComponent<WaterContamination>();
 
+        // Immediate loss when contaminated water enters.
         if (contamination != null &&
             contamination.isContaminated)
         {
-            reservoirContaminated = true;
+            LoseFromContamination();
         }
+    }
 
-        if (reservoirContaminated)
+    void OnTriggerStay2D(Collider2D other)
+    {
+        if (Finished || !other.CompareTag(waterTag))
+            return;
+
+        WaterContamination contamination =
+            other.GetComponent<WaterContamination>();
+
+        // Also detect water that becomes contaminated
+        // while already inside the reservoir.
+        if (contamination != null &&
+            contamination.isContaminated)
         {
-            ContaminateReservoir();
+            LoseFromContamination();
         }
     }
 
@@ -94,29 +105,12 @@ public class GoalReservoir : MonoBehaviour
         }
     }
 
-    void ContaminateReservoir()
-    {
-        foreach (GameObject drop in inside)
-        {
-            if (drop == null || !drop.activeInHierarchy)
-                continue;
-
-            WaterContamination contamination =
-                drop.GetComponent<WaterContamination>();
-
-            if (contamination != null)
-            {
-                contamination.Contaminate();
-            }
-        }
-    }
-
     void Update()
     {
         if (Finished)
             return;
 
-        // Check whether any water inside is contaminated.
+        // Check contamination before evaluating a win.
         foreach (GameObject drop in inside)
         {
             if (drop == null || !drop.activeInHierarchy)
@@ -128,32 +122,19 @@ public class GoalReservoir : MonoBehaviour
             if (contamination != null &&
                 contamination.isContaminated)
             {
-                reservoirContaminated = true;
-                break;
+                LoseFromContamination();
+                return;
             }
         }
 
-        // Spread contamination throughout the reservoir.
-        if (reservoirContaminated)
-        {
-            ContaminateReservoir();
-        }
-
-        // --- Container full ---
+        // --- WIN ---
         if (WaterInside >= waterNeeded)
         {
             holdTimer += Time.deltaTime;
 
             if (holdTimer >= holdTime)
             {
-                if (reservoirContaminated)
-                {
-                    LoseFromContamination();
-                }
-                else
-                {
-                    Win();
-                }
+                Win();
             }
 
             return;
