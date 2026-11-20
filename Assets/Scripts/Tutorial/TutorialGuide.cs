@@ -499,7 +499,6 @@ public class TutorialGuide : MonoBehaviour
     // ---------------- Panel content ----------------
     void RefreshPanel()
     {
-        int need = goal != null ? goal.waterNeeded : 40;
         string title, body, next = "Next";
         bool showBack = page != Page.Welcome;
         bool showSkip = true;
@@ -523,11 +522,11 @@ public class TutorialGuide : MonoBehaviour
                     break;
                 case Page.Goal:
                     title = "Your goal";
-                    body = $"Water is trapped in the pocket at the top. Get <b>{need} drops</b> into the <b>basin</b> below to win.";
+                    body = "Water is trapped in the pocket at the top. Guide it into the <b>basin</b> below and fill it up to win.";
                     break;
                 case Page.Counter:
-                    title = "Water counter";
-                    body = $"<b>Water</b> shows how many drops are in the basin, out of {need}. The bar fills as you go. <b>Shots</b> counts your launches.";
+                    title = "Water bar";
+                    body = "The <b>bar</b> shows how full the basin is. Fill it all the way to win. <b>Shots</b> shows how many launches you've used.";
                     break;
                 case Page.Controls:
                     title = "Restart & Menu";
@@ -555,7 +554,7 @@ public class TutorialGuide : MonoBehaviour
                     break;
                 case Page.Objective:
                     title = "Fill the basin";
-                    body = $"Dig through the mud below the water so it pours into the basin. Get {need} drops in to finish!";
+                    body = "Dig through the mud below the water so it pours into the basin. Fill the bar to finish!";
                     break;
                 default:   // Complete
                     title = "Tutorial complete!";
@@ -609,7 +608,7 @@ public class TutorialGuide : MonoBehaviour
                     targets.Add(Box(basinArea, "Basin"));
                     break;
                 case Page.Counter:
-                    if (statsPanel != null) targets.Add(new Target { ui = statsPanel, label = "Water counter" });
+                    if (statsPanel != null) targets.Add(new Target { ui = statsPanel, label = "Water bar" });
                     targets.Add(Box(basinArea, "Basin"));
                     break;
                 case Page.Controls:
