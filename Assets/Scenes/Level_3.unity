@@ -90654,7 +90654,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78ed4b198e6aef142bcca37be7c798fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GoalReservoir
-  waterNeeded: 40
+  waterNeeded: 75
   waterTag: Water
   holdTime: 0.5
   slingshot: {fileID: 966107243}
@@ -90746,8 +90746,8 @@ MonoBehaviour:
   mainCamera: {fileID: 519420031}
   waterCamera: {fileID: 207246407}
   waterTexture: {fileID: 8400000, guid: 2fb2004c3590a47a091c02f8ee26bcee, type: 2}
-  metaballMaterial: {fileID: 2100000, guid: 5be0f97ba1f1c49368ceb67dcbd4e835, type: 2}
-  sortingOrder: 5
+  metaballMaterial: {fileID: 2100000, guid: c18e631d0cbaff343b7cf598d8c644de, type: 2}
+  sortingOrder: -5
   resolutionScale: 1
 --- !u!4 &282526829
 Transform:
@@ -90844,7 +90844,7 @@ TilemapRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: -1
+  m_SortingOrder: -10
   m_MaskInteraction: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
@@ -270505,7 +270505,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 183
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -413381,7 +413381,7 @@ Transform:
   m_GameObject: {fileID: 1379648361}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -3.43, y: -0.66499996, z: 0}
+  m_LocalPosition: {x: -3.43, y: -0.78, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -413399,13 +413399,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 120fed1c939076345abd46cd1f55029f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WaterSpawner
-  dropPrefab: {fileID: 2076637116424336911, guid: 671e0a4c892087340832944e132b44b9, type: 3}
+  dropPrefab: {fileID: 2076637116424336911, guid: 04a148305ec99c04199c7cb15255624b, type: 3}
   maxDrops: 300
   fillOnStart: 1
-  areaSize: {x: 2, y: 1}
-  spacing: 0.2
+  areaSize: {x: 2.4, y: 1}
+  spacing: 0.15
   dropsPerSecond: 0
   pourVelocity: {x: 0, y: 0}
+  dropsThisSpawner: 96
 --- !u!1 &1549344817
 GameObject:
   m_ObjectHideFlags: 0

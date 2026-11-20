@@ -147239,7 +147239,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78ed4b198e6aef142bcca37be7c798fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GoalReservoir
-  waterNeeded: 35
+  waterNeeded: 50
   waterTag: Water
   holdTime: 0.5
   slingshot: {fileID: 1638965123}
@@ -343933,13 +343933,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 120fed1c939076345abd46cd1f55029f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WaterSpawner
-  dropPrefab: {fileID: 2076637116424336911, guid: d5fb81953af064c45882eb7e66b7d139, type: 3}
+  dropPrefab: {fileID: 2076637116424336911, guid: 04a148305ec99c04199c7cb15255624b, type: 3}
   maxDrops: 1000
   fillOnStart: 0
   areaSize: {x: 2, y: 1}
   spacing: 0.2
   dropsPerSecond: 0
   pourVelocity: {x: 8, y: 8}
+  dropsThisSpawner: 0
 --- !u!1 &1460860810
 GameObject:
   m_ObjectHideFlags: 0

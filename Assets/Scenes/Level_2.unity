@@ -88819,7 +88819,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78ed4b198e6aef142bcca37be7c798fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GoalReservoir
-  waterNeeded: 35
+  waterNeeded: 70
   waterTag: Water
   holdTime: 0.5
   slingshot: {fileID: 314727272}
@@ -89675,7 +89675,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 183
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -90027,7 +90027,7 @@ TilemapRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: -1
+  m_SortingOrder: -10
   m_MaskInteraction: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
@@ -538950,8 +538950,8 @@ MonoBehaviour:
   mainCamera: {fileID: 519420031}
   waterCamera: {fileID: 1450756541}
   waterTexture: {fileID: 8400000, guid: 2fb2004c3590a47a091c02f8ee26bcee, type: 2}
-  metaballMaterial: {fileID: 2100000, guid: 5be0f97ba1f1c49368ceb67dcbd4e835, type: 2}
-  sortingOrder: 5
+  metaballMaterial: {fileID: 2100000, guid: c18e631d0cbaff343b7cf598d8c644de, type: 2}
+  sortingOrder: -5
   resolutionScale: 1
 --- !u!4 &791365776
 Transform:
@@ -539392,13 +539392,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 120fed1c939076345abd46cd1f55029f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WaterSpawner
-  dropPrefab: {fileID: 2076637116424336911, guid: 671e0a4c892087340832944e132b44b9, type: 3}
+  dropPrefab: {fileID: 2076637116424336911, guid: 04a148305ec99c04199c7cb15255624b, type: 3}
   maxDrops: 300
   fillOnStart: 1
   areaSize: {x: 2, y: 1}
-  spacing: 0.2
+  spacing: 0.15
   dropsPerSecond: 0
   pourVelocity: {x: 0, y: 0}
+  dropsThisSpawner: 78
 --- !u!1 &1450756540
 GameObject:
   m_ObjectHideFlags: 0
