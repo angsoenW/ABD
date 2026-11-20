@@ -20,6 +20,11 @@ public class GoalReservoir : MonoBehaviour
     public UnityEvent onLose;
     public UnityEvent onContaminationLose;
 
+    public enum LoseCause { NotEnoughWater, OutOfShots }
+
+    // Why the normal (non-contamination) lose fired. Read by LevelUI.
+    public LoseCause LoseReason { get; set; } = LoseCause.NotEnoughWater;
+
     public bool Finished { get; private set; }
     public bool Won { get; private set; }
 
@@ -176,6 +181,10 @@ public class GoalReservoir : MonoBehaviour
 
             if (settleTimer >= settleTime)
             {
+                // Using every shot takes precedence over the water check.
+                LoseReason = outOfShots
+                    ? LoseCause.OutOfShots
+                    : LoseCause.NotEnoughWater;
                 Lose();
             }
         }

@@ -183,8 +183,13 @@ public class LevelUI : MonoBehaviour
         levelOver = true;
         levelWon = false;
 
+        bool outOfShots =
+            goal != null &&
+            goal.LoseReason == GoalReservoir.LoseCause.OutOfShots;
+
         SetResult(
-            "Not enough water...\nPress Enter to try again"
+            (outOfShots ? "You Ran Out of Shots!" : "Not Enough Water!")
+            + "\nPress Enter to try again"
         );
 
         if (losePanel != null)

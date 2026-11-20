@@ -49,6 +49,7 @@ public class WaterLauncherLoseCondition : MonoBehaviour
                 return;
 
             loseTriggered = true;
+            goal.LoseReason = GoalReservoir.LoseCause.OutOfShots;
 
             // Tell the existing UI to display the lose screen.
             goal.onLose.Invoke();
